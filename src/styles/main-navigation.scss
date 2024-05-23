@@ -1,9 +1,11 @@
 
 .main-navigation {
     height: 80px;
+    width: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr;
     padding: 0 40px;
+    border-bottom: 1px solid grey;
 
     .main-navigation-left {
         display: flex;
@@ -13,8 +15,8 @@
 
     .main-navigation-right {
         display: flex;
-        align-items: end;
-        justify-content: center;
+        align-items: center;
+        justify-content: end;
     }
 
     .main-nav-link {
