@@ -1,6 +1,6 @@
 import { createContext, useState, useEffect } from "react";
 
-import { recipes } from "./dummy/dummy-recipes";
+import { dummyRecipes } from "./dummy/dummy-recipes";
 
 export const RecipesContext = createContext({
     recipes: [],
@@ -15,7 +15,7 @@ function RecipesContextProvider({ children }) {
 
     useEffect(() => {
 
-        setRecipes(recipes);
+        setRecipes(dummyRecipes);
         setLoading(false);
     }, []);
 

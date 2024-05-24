@@ -21,7 +21,9 @@ export default function Home() {
             )}
 
             <div className="home-recipes-container">
-                { recipes.map(recipe => <RecipeItem key={recipe.id} recipe={recipe} />) }
+                {recipes.map(recipe => (
+                    <RecipeItem key={recipe.id} recipe={recipe} />
+                ))}
             </div>
         </div>
     );

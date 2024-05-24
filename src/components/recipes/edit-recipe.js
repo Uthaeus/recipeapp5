@@ -11,7 +11,7 @@ export default function EditRecipe() {
     const { recipes } = useContext(RecipesContext);
 
     useEffect(() => {
-        setRecipe(recipes.find(r => +r.id === +id));
+        setRecipe(recipes.find(r => r.id === id));
     }, [recipes, id]);
 
     return (

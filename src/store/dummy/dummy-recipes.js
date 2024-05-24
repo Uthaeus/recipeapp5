@@ -1,5 +1,5 @@
 
-export const recipes = [
+export const dummyRecipes = [
     {
         id: "r1",
         name: "Spaghetti",
