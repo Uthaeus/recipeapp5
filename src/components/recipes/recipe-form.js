@@ -1,7 +1,12 @@
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+
+import { RecipesContext } from "../../store/recipes-context";
+import { UserContext } from "../../store/user-context";
 
 export default function RecipeForm({ recipe }) {
+    const { categories } = useContext(RecipesContext);
+    const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -13,6 +18,7 @@ export default function RecipeForm({ recipe }) {
   const [ingredientAmount, setIngredientAmount] = useState("");
   const [steps, setSteps] = useState([]);
   const [step, setStep] = useState("");
+  const [categoryToggle, setCategoryToggle] = useState(false);
 
   useEffect(() => {
     if (recipe) {
@@ -21,6 +27,8 @@ export default function RecipeForm({ recipe }) {
       setSteps(recipe.steps);
     }
   }, [recipe, reset]);
+
+  
 
   const addIngredientHandler = () => {
     setIngredients([...ingredients, { ingredient, ingredientAmount }]);
@@ -32,7 +40,18 @@ export default function RecipeForm({ recipe }) {
     setSteps([...steps, step ]);
     setStep("");
   };
+
+  const selectCategoryHandler = e => {
+    if (e.target.value === "other") {
+      setCategoryToggle(true);
+      reset({ category: "" });
+    }
+  }
   
+  const closeSelectCategoryHandler = () => {
+    setCategoryToggle(false);
+    reset({ category: "" });
+  }
 
   const onSubmit = (data) => {
     console.log(data);
@@ -43,7 +62,7 @@ export default function RecipeForm({ recipe }) {
       <div className="row">
         <div className="col-md-4">
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Recipe Name</label>
             <input
               type="text"
               className="form-control"
@@ -74,11 +93,26 @@ export default function RecipeForm({ recipe }) {
         <div className="col-md-6">
           <div className="form-group">
             <label htmlFor="category">Category</label>
-            <input
-              type="text"
-              className="form-control"
-              {...register("category", { required: true })}
-            />
+            {!categoryToggle && <select className="form-select" {...register("category", { required: true })} onChange={selectCategoryHandler}>
+              <option value="">select a category</option>
+              {categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+              <option value="other">Other</option>
+            </select>}
+            {categoryToggle && (
+                <>
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="enter custom category"
+                        {...register("category", { required: true })}
+                    />
+                    <p onClick={closeSelectCategoryHandler}>close</p>
+                </>
+            )}
             {errors.category && (
               <span className="text-danger">This field is required</span>
             )}
@@ -87,12 +121,21 @@ export default function RecipeForm({ recipe }) {
 
         <div className="col-md-6">
           <div className="form-group">
-            <label htmlFor="time">Time</label>
-            <input
-              type="text"
-              className="form-control"
-              {...register("time", { required: true })}
-            />
+            <label htmlFor="time">Approx. Time (in minutes)</label>
+            <select className="form-select" {...register("time", { required: true })}>
+              <option value="">select time</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+              <option value="20">20</option>
+              <option value="25">25</option>
+              <option value="30">30</option>
+              <option value="35">35</option>
+              <option value="40">40</option>
+              <option value="45">45</option>
+              <option value="50">50</option>
+              <option value="55">55</option>
+              <option value="60">60</option>
+            </select>
             {errors.time && (
               <span className="text-danger">This field is required</span>
             )}
@@ -101,7 +144,7 @@ export default function RecipeForm({ recipe }) {
       </div>
 
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-6">
           <div className="form-group mb-3">
             <label htmlFor="ingredient">Ingredient</label>
             <input
@@ -129,7 +172,7 @@ export default function RecipeForm({ recipe }) {
           </p>
         </div>
 
-        <div className="col-md-5">
+        <div className="col-md-6">
             <ul>
                 {ingredients.map((ingredient, index) => (
                     <li key={index}>
@@ -141,13 +184,13 @@ export default function RecipeForm({ recipe }) {
       </div>
 
       <div className="row">
-        <div className="col-md-7">
+        <div className="col-md-6">
           <div className="form-group mb-3">
             <label htmlFor="step">Step</label>
-            <input
-              type="text"
+            <textarea
               className="form-control"
               id="step"
+              rows="3"
               onChange={(e) => setStep(e.target.value)}
               value={step}
             />
@@ -157,7 +200,7 @@ export default function RecipeForm({ recipe }) {
           </p>
         </div>
 
-        <div className="col-md-5">
+        <div className="col-md-6">
             <ul>
                 {steps.map((step, index) => (
                     <li key={index}>
