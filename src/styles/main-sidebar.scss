@@ -1,6 +1,76 @@
 
 .main-sidebar {
-    height: calc(100vh - 80px - 4rem);
-    padding: 1rem;
-    border-left: 1px solid grey;
+    min-height: calc(100vh - 80px - 4rem);
+    padding: 2rem 1rem;
+    border-left: 1px solid $darkGrey;
+    background-color: $lightGrey;
+
+    .new-recipe-link {
+        text-decoration: none;
+        padding: 4px 20px;
+        font-size: 1.1em;
+        font-weight: 500;
+        color: $black;
+        background-color: $pink200;
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out;
+        border-radius: 4px;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+
+        &:hover {
+            color: $lightGrey;
+            background-color: $pink300;
+        }
+    }
+
+    .sidebar-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 2rem 0 1rem 1rem;
+        color: $black;
+    }
+
+    .sidebar-container {
+        padding: 0 2rem;
+        display: flex;
+        flex-direction: column;
+
+        .sidebar-subtitle {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin: 1rem 0;
+            color: $darkGrey;
+        }
+
+        .sidebar-reset-btn {
+            font-size: 1.1em;
+            font-weight: 500;
+            color: $black;
+            transition: color 0.3s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+                color: $pink300;
+            }
+        }
+
+        .sidebar-categories-container {
+            display: flex;
+            flex-direction: column;
+            margin-left: 1rem;
+            margin-bottom: 2rem;
+
+            .sidebar-category {
+                font-size: 1.1em;
+                font-weight: 500;
+                color: $black;
+                margin-bottom: 1rem;
+                transition: color 0.3s ease-in-out;
+
+                &:hover {
+                    cursor: pointer;
+                    color: $pink300;
+                }
+            }
+        }
+    }
 }

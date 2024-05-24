@@ -13,6 +13,7 @@ export default function Home() {
         <div className="home">
             <div className="home-header">
                 <h1 className="home-title">Steve's Recipe Page</h1>
+                <p className="home-subtitle">this is a subtitle for the home page</p>
             </div>
 
             <div className="home-recipes-container">

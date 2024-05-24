@@ -2,12 +2,12 @@
 @import './main-sidebar.scss';
 
 @import './home.scss';
+@import './recipe-item.scss';
 
 .root-layout {
 
     .root-layout-body {
         display: grid;
         grid-template-columns: 3fr 1fr;
-        padding: 2rem;
     }
 }
