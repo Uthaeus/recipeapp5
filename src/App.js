@@ -3,6 +3,9 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/layouts/root-layout";
 import Home from "./pages/home";
 import About from "./pages/about";
+import NewRecipe from "./components/recipes/new-recipe";
+import EditRecipe from "./components/recipes/edit-recipe";
+import RecipeDetail from "./components/recipes/recipe-detail";
 
 const router = createBrowserRouter([
   {
@@ -16,6 +19,18 @@ const router = createBrowserRouter([
       {
         path: "/about",
         element: <About />
+      },
+      {
+        path: "/recipes/new",
+        element: <NewRecipe />
+      },
+      {
+        path: "/recipes/:id/edit",
+        element: <EditRecipe />
+      },
+      {
+        path: "/recipes/:id",
+        element: <RecipeDetail />
       }
     ]
   }

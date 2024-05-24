@@ -8,7 +8,9 @@ export const recipes = [
         steps: ["Boil spaghetti", "Put sauce on spaghetti", "Enjoy!"],
         category: "pasta",
         time: "20 min",
+        author: "Max",
         uid: "u1",
+        date: "2022-01-01",
     },
     {
         id: "r2",
@@ -18,7 +20,9 @@ export const recipes = [
         steps: ["Boil meat", "Put sauce on meat", "Enjoy!"],
         category: "pasta",
         time: "30 min",
+        author: "Max",
         uid: "u1",
+        date: "2022-01-01",
     },
     {
         id: "r3",
@@ -28,7 +32,9 @@ export const recipes = [
         steps: ["Boil risotto", "Heat oil in pan", "Put sauce on risotto", "Enjoy!"],
         category: "pasta",
         time: "40 min",
+        author: "Julie",
         uid: "u3",
+        date: "2022-11-01",
     },
     {
         id: "r4",
@@ -38,7 +44,9 @@ export const recipes = [
         steps: ["Boil tomato sauce", "Put cheese on tomato sauce", "Enjoy!"],
         category: "pizza",
         time: "10 min",
+        author: "Manuel",
         uid: "u2",
+        date: "2022-03-11",
     },
     {
         id: "r5",
@@ -48,7 +56,9 @@ export const recipes = [
         steps: ["Boil bacon", "Put cheese on bacon", "Enjoy!"],
         category: "pizza",
         time: "15 min",
+        author: "Dumplin",
         uid: "u11",
+        date: "2022-03-11",
     },
     {
         id: "r6",
@@ -58,7 +68,9 @@ export const recipes = [
         steps: ["Boil tomato sauce", "Put cheese on tomato sauce", "Enjoy!"],
         category: "salad",
         time: "10 min",
+        author: "Manuel",
         uid: "u2",
+        date: "2022-03-11",
     },
     {
         id: "r7",
@@ -68,7 +80,9 @@ export const recipes = [
         steps: ["Boil tomato sauce", "Put cheese on tomato sauce", "Enjoy!"],
         category: "soup",
         time: "10 min",
+        author: "Manuel",
         uid: "u2",
+        date: "2022-03-12",
     },
     {
         id: "r8",
@@ -78,7 +92,9 @@ export const recipes = [
         steps: ["Preheat oven to 375°F", "Put tater tots on baking sheet and place in oven while it heats up and you prepare other ingredients", "Brown Hamburger", "Salt and pepper to taste", "Stir in soup until thoroughly mixed", "Stir in sour cream", "Pour into oven safe dish with extra room to add tots", "Add layer of shredded cheese", "remove from oven and add tater tots on top of cheese layer", "Add a little seasoned salt and some more cheese on top of tots", "Bake for about 30 minutes",  "Enjoy!"],
         category: "casserole",
         time: "45 min",
+        author: "Dumplin",
         uid: "u11",
+        date: "2022-03-12",
     },
     {
         id: "r9",
@@ -88,6 +104,8 @@ export const recipes = [
         steps: ["In 5qt saucepan add Hominy and water, begin to heat on medium", "Heat pan over medium heat, add hamburger", "While hamburger browns, add other ingredients to soup mixture", "Once hamburger is brown, drain and add to soup", "Reduce heat slightly and let simmer for 10-15 minutes", "Add portion to bowl, add shredded cheese, sour cream, and jalepenos to your liking", "Serve with tortilla chips", "Enjoy!"],
         category: "soup",
         time: "25 min",
+        author: "Manuel",
         uid: "u2",
+        date: "2022-03-12",
     }
 ]

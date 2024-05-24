@@ -17,6 +17,8 @@ export default function RecipeForm({ recipe }) {
   useEffect(() => {
     if (recipe) {
       reset(recipe);
+      setIngredients(recipe.ingredients);
+      setSteps(recipe.steps);
     }
   }, [recipe, reset]);
 
