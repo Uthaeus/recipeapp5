@@ -4,8 +4,9 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 3fr;
+    background-color: $pink200;
     padding: 0 40px;
-    border-bottom: 1px solid grey;
+    border-bottom: 1px solid $darkGrey;
 
     .main-navigation-left {
         display: flex;
@@ -23,9 +24,17 @@
         font-size: 20px;
         margin: 0 20px;
         text-decoration: none;
+        color: $darkGrey;
+        transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+        &:hover {
+            color: $black;
+            transform: scale(1.05);
+        }
     }
 
     .main-nav-link-active {
         font-weight: bold;
+        color: $black;
     }
 }

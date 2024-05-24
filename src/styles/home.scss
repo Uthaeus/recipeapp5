@@ -1,0 +1,28 @@
+
+.home {
+    min-height: calc(100vh - 80px);
+    background-color: $pink100;
+
+    .home-header {
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $black;
+
+        .home-title {
+            color: $pink100;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+    }
+
+    .home-recipes-container {
+        width: 90%;
+        margin: 0 auto;
+        padding: 2rem 0;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
+}

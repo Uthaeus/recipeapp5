@@ -10,15 +10,10 @@ export default function Home() {
     const { recipes } = useContext(RecipesContext);
 
     return (
-        <div>
-            <h1>Home</h1>
-
-            {user && (
-                <>
-                    <p>Welcome {user.name}</p>
-                    <p>You are {isAdmin ? "an admin" : "a user"}</p>
-                </>
-            )}
+        <div className="home">
+            <div className="home-header">
+                <h1 className="home-title">Steve's Recipe Page</h1>
+            </div>
 
             <div className="home-recipes-container">
                 {recipes.map(recipe => (
