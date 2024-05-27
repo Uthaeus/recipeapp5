@@ -26,35 +26,54 @@ export default function RecipeDetail() {
                 <p className="recipe-detail-description">{recipe?.description}</p>
 
                 <div className="recipe-detail-header-details">
-                    <p className="recipe-detail-author-wrapper">Submitted By <span className="recipe-detail-author">{recipe?.author}</span></p>
-                    <p className="recipe-detail-date-wrapper">posted <span className="recipe-detail-date">{recipe?.date}</span></p>
+                    <p className="recipe-detail-author-wrapper">Submitted By <span className="recipe-detail-author mx-2">{recipe?.author}</span></p>
+                    <p className="recipe-detail-date-wrapper">posted <span className="recipe-detail-date mx-2">{recipe?.date}</span></p>
                 </div>
 
                 {(user.id === recipe?.uid || isAdmin) && (
-                    <Link to={`/recipes/${id}/edit`} className="recipe-detail-edit-link">Edit</Link>
+                    <Link to={`/recipes/${id}/edit`} className="recipe-detail-edit-link">Edit Recipe</Link>
                 )}
             </div>
 
-            <p>Time: {recipe?.time}</p>
-            <p>Category: {recipe?.category}</p>
+            <div className="recipe-detail-image-wrapper">
+                <img src={image} alt="spaghetti" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
+            </div>
 
-            <h2>Ingredients</h2>
-            <ul>
-                {recipe?.ingredients.map(ingredient => (
-                    <li key={ingredient.ingredient}>
-                        {ingredient.ingredient} - {ingredient.quantity}
-                    </li>
-                ))}
-            </ul>
+            <div className="recipe-detail-body">
+                <div className="recipe-detail-body-detail-wrapper">
+                    <p className="recipe-detail-body-detail">Category: <span className="recipe-detail-category">{recipe?.category}</span></p>
 
-            <h2>Steps</h2>
-            <ol>
-                {recipe?.steps.map((step, index) => (
-                    <li key={index}>
-                        {step}
-                    </li>
-                ))}
-            </ol>
+                    <p className="recipe-detail-body-detail">Approx. Time: <span className="recipe-detail-time">{recipe?.time}</span> minutes</p>
+                </div>
+
+                <div className="row my-4">
+                    <div className="col-md-8">
+                        <h2>Steps</h2>
+                        <ol>
+                            {recipe?.steps.map((step, index) => (
+                                <li key={index}>
+                                    {step}
+                                </li>
+                            ))}
+                        </ol>
+                    </div>
+
+                    <div className="col-md-4">
+                        <h2>Ingredients</h2>
+                        <ul>
+                            {recipe?.ingredients.map(ingredient => (
+                                <li key={ingredient.ingredient}>
+                                    {ingredient.ingredient} - {ingredient.quantity}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div className="recipe-detail-actions">
+                <Link to="/" className="btn btn-primary">Back to Recipes</Link>
+            </div>
         </div>
     );
 }

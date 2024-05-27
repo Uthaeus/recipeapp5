@@ -1,40 +1,46 @@
 
 .recipe-detail {
-    padding: 2rem 5%;
+    padding: 2rem 5% 4rem 5%;
+    min-height: calc(100vh - 80px);
+    position: relative;
 
     .recipe-detail-header {
-        width: 65%;
+        width: 75%;
         display: flex;
         flex-direction: column;
+        background-color: $pink100;
+        border-radius: 2px;
+        padding: 2rem 2rem 1rem 2rem;
         margin: 0 auto;
         margin-bottom: 2rem;
-        border-bottom: 1px solid black;
         position: relative;
 
         .recipe-detail-title {
             text-align: center;
-            font-size: 2rem;
+            font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 1rem;
+            color: $darkGrey;
         }
 
         .recipe-detail-description {
             text-align: center;
             font-size: 1.2rem;
             margin-bottom: 1rem;
+            color: $darkGrey;
         }
 
         .recipe-detail-header-details {
             display: flex;
-            justify-content: space-between;
-            padding: 0 1rem;
+            align-items: baseline;
+            justify-content: space-around;
 
             .recipe-detail-author-wrapper {
                 font-size: 1.1em;
                 color: grey;
 
                 .recipe-detail-author {
-                    color: black;
+                    color: $pink300;
                     font-size: 1.2em;
                     font-weight: bold;
                 }
@@ -42,10 +48,10 @@
 
             .recipe-detail-date-wrapper {
                 font-size: 0.9em;
-                color: lightgray;
+                color: $darkGrey;
 
                 .recipe-detail-date {
-                    color: grey;
+                    color: white;
                     font-size: 1em;
                     font-weight: bold;
                 }
@@ -55,14 +61,38 @@
         .recipe-detail-edit-link {
             position: absolute;
             right: 1rem;
-            bottom: 0;
-            color: $pink300;
+            top: 1rem;
+            color: $darkGrey;
             text-decoration: none;
             transition: color 0.3s ease-in-out;
 
             &:hover {
-                color: $darkGrey;
+                color: $lightGrey;
             }
         }
+    }
+
+    .recipe-detail-image-wrapper {
+        width: 55%;
+        margin: 2rem auto;
+    }
+
+    .recipe-detail-body {
+        width: 75%;
+        margin: 0 auto;
+
+        .recipe-detail-body-detail-wrapper {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-around;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid $darkGrey;
+        }
+    }
+
+    .recipe-detail-actions {
+        position: absolute;
+        bottom: 2rem;
+        right: 5%;
     }
 }
