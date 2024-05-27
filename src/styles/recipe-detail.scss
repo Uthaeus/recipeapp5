@@ -1,0 +1,13 @@
+
+.recipe-detail {
+    padding: 2rem 5%;
+
+    .recipe-detail-header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid black;
+    }
+}

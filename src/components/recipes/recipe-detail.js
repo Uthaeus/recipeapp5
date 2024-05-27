@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
+import image from '../../assets/images/spaghetti_image.png';
+
 export default function RecipeDetail() {
 
     const { id } = useParams();
@@ -19,8 +21,11 @@ export default function RecipeDetail() {
     return (
         <div className="recipe-detail">
 
-            <h1>{recipe?.name}</h1>
-            <p>{recipe?.description}</p>
+            <div className="recipe-detail-header">
+                <img src={image} alt="spaghetti" style={{ width: '75%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
+                <h1 className="recipe-detail-title">{recipe?.name}</h1>
+                <p className="recipe-detail-description">{recipe?.description}</p>
+            </div>
 
             {isAdmin && (
                 <Link to={`/recipes/${id}/edit`}>Edit</Link>
