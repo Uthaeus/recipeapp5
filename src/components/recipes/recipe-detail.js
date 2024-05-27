@@ -22,17 +22,18 @@ export default function RecipeDetail() {
         <div className="recipe-detail">
 
             <div className="recipe-detail-header">
-                <img src={image} alt="spaghetti" style={{ width: '75%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
                 <h1 className="recipe-detail-title">{recipe?.name}</h1>
                 <p className="recipe-detail-description">{recipe?.description}</p>
+
+                <div className="recipe-detail-header-details">
+                    <p className="recipe-detail-author-wrapper">Submitted By <span className="recipe-detail-author">{recipe?.author}</span></p>
+                    <p className="recipe-detail-date-wrapper">posted <span className="recipe-detail-date">{recipe?.date}</span></p>
+                </div>
+
+                {(user.id === recipe?.uid || isAdmin) && (
+                    <Link to={`/recipes/${id}/edit`} className="recipe-detail-edit-link">Edit</Link>
+                )}
             </div>
-
-            {isAdmin && (
-                <Link to={`/recipes/${id}/edit`}>Edit</Link>
-            )}
-
-            <p>Author: {recipe?.author}</p>
-            <p>Created: {recipe?.date}</p>
 
             <p>Time: {recipe?.time}</p>
             <p>Category: {recipe?.category}</p>
