@@ -80,6 +80,7 @@
     .recipe-detail-body {
         width: 75%;
         margin: 0 auto;
+        margin-bottom: 2rem;
 
         .recipe-detail-body-detail-wrapper {
             display: flex;
@@ -87,6 +88,75 @@
             justify-content: space-around;
             padding-bottom: 1rem;
             border-bottom: 1px solid $darkGrey;
+
+            .recipe-detail-body-detail {
+                font-size: 1.2em;
+                font-weight: 500;
+                color: $black;
+            }
+
+            .recipe-detail-category {
+                color: $pink300;
+                font-size: 1.3em;
+                font-weight: bold;
+                margin-left: 1rem;
+            }
+
+            .recipe-detail-time {
+                color: $darkGrey;
+                font-size: 1.2em;
+                font-weight: bold;
+                margin-left: 0.5rem;
+            }
+        }
+
+        .recipe-detail-subtitle {
+            width: max-content;
+            font-size: 1.3em;
+            font-weight: 600;
+            color: $black;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            padding-right: 2rem;
+            border-bottom: 1px solid $black;
+        }
+
+        .recipe-detail-steps-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0 1rem;
+
+            .recipe-detail-step {
+                font-size: 1.1em;
+                margin-bottom: 0.75rem;
+                color: $black;
+            }
+        }
+
+        .recipe-detail-ingredients-container {
+            display: flex;
+            flex-direction: column;
+            padding: 0 1rem;
+            border-left: 1px solid $darkGrey;
+
+            .recipe-detail-ingredient-item {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                margin-bottom: 0.25rem;
+                margin-left: 0.5rem;
+
+                .recipe-detail-ingredient {
+                    font-size: 1.2em;
+                    font-weight: 600;
+                    color: $darkGrey;
+                }
+
+                .recipe-detail-ingredient-amount {
+                    font-size: 1.1em;
+                    color: $black;
+                }
+            }
         }
     }
 

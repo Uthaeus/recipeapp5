@@ -5,8 +5,8 @@ import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
 export default function RecipeForm({ recipe }) {
-    const { categories } = useContext(RecipesContext);
-    const { user } = useContext(UserContext);
+  const { categories } = useContext(RecipesContext);
+  const { user } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -28,40 +28,46 @@ export default function RecipeForm({ recipe }) {
     }
   }, [recipe, reset]);
 
-  
-
   const addIngredientHandler = () => {
     setIngredients([...ingredients, { ingredient, ingredientAmount }]);
     setIngredient("");
     setIngredientAmount("");
   };
 
+  const removeIngredientHandler = (ingredient) => {
+    setIngredients(ingredients.filter((i) => i.ingredient !== ingredient));
+  }
+
   const addStepHandler = () => {
-    setSteps([...steps, step ]);
+    setSteps([...steps, step]);
     setStep("");
   };
 
-  const selectCategoryHandler = e => {
+  const removeStepHandler = (step) => {
+    setSteps(steps.filter((s) => s !== step));
+  }
+
+  const selectCategoryHandler = (e) => {
     if (e.target.value === "other") {
       setCategoryToggle(true);
       reset({ category: "" });
     }
-  }
-  
+  };
+
   const closeSelectCategoryHandler = () => {
     setCategoryToggle(false);
     reset({ category: "" });
-  }
+  };
 
   const onSubmit = (data) => {
     console.log(data);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)} className="recipe-form">
       <div className="row">
         <div className="col-md-4">
-          <div className="form-group">
+          <div className="form-group mb-3">
             <label htmlFor="name">Recipe Name</label>
             <input
               type="text"
@@ -75,7 +81,7 @@ export default function RecipeForm({ recipe }) {
           </div>
         </div>
         <div className="col-md-8">
-          <div className="form-group">
+          <div className="form-group mb-3">
             <label htmlFor="description">Description</label>
             <input
               type="text"
@@ -91,27 +97,33 @@ export default function RecipeForm({ recipe }) {
 
       <div className="row">
         <div className="col-md-6">
-          <div className="form-group">
+          <div className="form-group mb-3">
             <label htmlFor="category">Category</label>
-            {!categoryToggle && <select className="form-select" {...register("category", { required: true })} onChange={selectCategoryHandler}>
-              <option value="">select a category</option>
-              {categories.map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
-              <option value="other">Other</option>
-            </select>}
+            {!categoryToggle && (
+              <select
+                className="form-select"
+                {...register("category", { required: true })}
+                onChange={selectCategoryHandler}
+              >
+                <option value="">select a category</option>
+                {categories.map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
+                <option value="other">Other</option>
+              </select>
+            )}
             {categoryToggle && (
-                <>
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="enter custom category"
-                        {...register("category", { required: true })}
-                    />
-                    <p onClick={closeSelectCategoryHandler}>close</p>
-                </>
+              <>
+                <input
+                  type="text"
+                  className="form-control"
+                  placeholder="enter custom category"
+                  {...register("category", { required: true })}
+                />
+                <p onClick={closeSelectCategoryHandler} className="recipe-form-custom-category-close">revert to category list</p>
+              </>
             )}
             {errors.category && (
               <span className="text-danger">This field is required</span>
@@ -120,9 +132,12 @@ export default function RecipeForm({ recipe }) {
         </div>
 
         <div className="col-md-6">
-          <div className="form-group">
+          <div className="form-group mb-3">
             <label htmlFor="time">Approx. Time (in minutes)</label>
-            <select className="form-select" {...register("time", { required: true })}>
+            <select
+              className="form-select"
+              {...register("time", { required: true })}
+            >
               <option value="">select time</option>
               <option value="10">10</option>
               <option value="15">15</option>
@@ -143,49 +158,42 @@ export default function RecipeForm({ recipe }) {
         </div>
       </div>
 
-      <div className="row">
+      <div className="row mb-3">
         <div className="col-md-6">
-          <div className="form-group mb-3">
-            <label htmlFor="ingredient">Ingredient</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredient"
-              onChange={(e) => setIngredient(e.target.value)}
-              value={ingredient}
-            />
-          </div>
+          <div className="row">
+            <div className="col-md-8">
+              <div className="form-group">
+                <label htmlFor="ingredient">Ingredient</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="ingredient"
+                  onChange={(e) => setIngredient(e.target.value)}
+                  value={ingredient}
+                />
+              </div>
+              <p className="recipe-form-add-btn mt-1" onClick={addIngredientHandler}>
+                Add Ingredient &#62;&#62;
+              </p>
+            </div>
+            <div className="col-md-4">
 
-          <div className="form-group mb-3">
-            <label htmlFor="ingredient-amount">Amount</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ingredient-amount"
-              onChange={(e) => setIngredientAmount(e.target.value)}
-              value={ingredientAmount}
-            />
+              <div className="form-group">
+                <label htmlFor="ingredient-amount">Amount</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="ingredient-amount"
+                  onChange={(e) => setIngredientAmount(e.target.value)}
+                  value={ingredientAmount}
+                />
+              </div>
+            </div>
           </div>
-
-          <p className="recipe-form-add-btn" onClick={addIngredientHandler}>
-            Add Ingredient
-          </p>
         </div>
 
         <div className="col-md-6">
-            <ul>
-                {ingredients.map((ingredient, index) => (
-                    <li key={index}>
-                        {ingredient.ingredient} - {ingredient.ingredientAmount}
-                    </li>
-                ))}
-            </ul>
-        </div>
-      </div>
-
-      <div className="row">
-        <div className="col-md-6">
-          <div className="form-group mb-3">
+          <div className="form-group">
             <label htmlFor="step">Step</label>
             <textarea
               className="form-control"
@@ -195,23 +203,43 @@ export default function RecipeForm({ recipe }) {
               value={step}
             />
           </div>
-          <p className="recipe-form-add-btn" onClick={addStepHandler}>
-            Add Step
+          <p className="recipe-form-add-btn mt-1" onClick={addStepHandler}>
+            Add Step &#62;&#62;
           </p>
-        </div>
-
-        <div className="col-md-6">
-            <ul>
-                {steps.map((step, index) => (
-                    <li key={index}>
-                        {step}
-                    </li>
-                ))}
-            </ul>
         </div>
       </div>
 
-      <button className="btn btn-primary">{ recipe ? 'Update Recipe' : 'Add Recipe'}</button>
+      <div className="row mb-5">
+        <div className="col-md-6">
+          <p className="recipe-form-subtitle">Ingredients</p>
+
+          {ingredients.length === 0 && <p className="recipe-form-none">No Ingredients Added</p>}
+          
+          {ingredients.map((ingredient, index) => (
+            <div className="recipe-form-ingredient-item" key={index}>
+              <p className="recipe-form-ingredient-item-ingredient">{ingredient.ingredient} - {ingredient.ingredientAmount}</p>
+              
+              <p className="recipe-form-custom-category-close" onClick={() => removeIngredientHandler(ingredient.ingredient)}>remove</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="col-md-6">
+          <p className="recipe-form-subtitle">Steps</p>
+          {steps.length === 0 && <p className="recipe-form-none">No Steps Added</p>}
+          
+          {steps.map((step, index) => (
+            <div key={index} className="recipe-form-step-item">
+              <p className="recipe-form-step">{step}</p>
+              <p className="recipe-form-custom-category-close" onClick={() => removeStepHandler(step)}>remove</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <button className="btn btn-primary">
+        {recipe ? "Update Recipe" : "Add New Recipe"}
+      </button>
     </form>
   );
 }

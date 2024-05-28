@@ -47,26 +47,26 @@ export default function RecipeDetail() {
                 </div>
 
                 <div className="row my-4">
-                    <div className="col-md-8">
-                        <h2>Steps</h2>
-                        <ol>
-                            {recipe?.steps.map((step, index) => (
-                                <li key={index}>
-                                    {step}
-                                </li>
-                            ))}
-                        </ol>
+                    <div className="col-md-8 recipe-detail-steps-container">
+                        <h2 className="recipe-detail-subtitle">Steps</h2>
+                        
+                        {recipe?.steps.map((step, index) => (
+                            <p className="recipe-detail-step" key={index}>
+                                Step {index + 1}.  <br />
+                                <span className="mx-2">{step}</span>
+                            </p>
+                        ))}
                     </div>
 
-                    <div className="col-md-4">
-                        <h2>Ingredients</h2>
-                        <ul>
-                            {recipe?.ingredients.map(ingredient => (
-                                <li key={ingredient.ingredient}>
-                                    {ingredient.ingredient} - {ingredient.quantity}
-                                </li>
-                            ))}
-                        </ul>
+                    <div className="col-md-4 recipe-detail-ingredients-container">
+                        <h2 className="recipe-detail-subtitle">Ingredients</h2>
+                        
+                        {recipe?.ingredients.map(ingredient => (
+                            <div className="recipe-detail-ingredient-item" key={ingredient.ingredient}>
+                                <p className="recipe-detail-ingredient">{ingredient.ingredient}</p>
+                                <p className="recipe-detail-ingredient-amount">{ingredient.quantity}</p>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
