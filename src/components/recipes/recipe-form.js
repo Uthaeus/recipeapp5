@@ -150,6 +150,7 @@ export default function RecipeForm({ recipe }) {
               <option value="50">50</option>
               <option value="55">55</option>
               <option value="60">60</option>
+              <option value="65">&gt; 60</option>
             </select>
             {errors.time && (
               <span className="text-danger">This field is required</span>

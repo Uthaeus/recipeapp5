@@ -16,7 +16,7 @@ export default function Home() {
                 <p className="home-subtitle">this is a subtitle for the home page</p>
             </div>
 
-            <div className="home-recipes-container">
+            <div id='home-recipes' className="home-recipes-container">
                 {recipes.map(recipe => (
                     <RecipeItem key={recipe.id} recipe={recipe} />
                 ))}

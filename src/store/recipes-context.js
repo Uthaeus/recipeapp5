@@ -7,7 +7,9 @@ export const RecipesContext = createContext({
     categories: [],
     addRecipe: () => {},
     removeRecipe: () => {},
-    filterRecipes: () => {}
+    filterRecipes: () => {},
+    filterRecipesByCategory: () => {},
+    filterRecipesByTime: () => {},
 });
 
 function RecipesContextProvider({ children }) {
@@ -17,6 +19,9 @@ function RecipesContextProvider({ children }) {
     const [categories, setCategories] = useState([]);
     const [recipeFilter, setRecipeFilter] = useState('all');
     const [loading, setLoading] = useState(true);
+
+    const [categoryFilter, setCategoryFilter] = useState('all');
+    const [timeFilter, setTimeFilter] = useState('all');
 
     useEffect(() => {
         const categoriesList = [];
@@ -35,13 +40,23 @@ function RecipesContextProvider({ children }) {
 
 
     useEffect(() => {
-        if (recipeFilter === 'all') {
+        // if (recipeFilter === 'all') {
+        //     setRecipes(allRecipes);
+        // } else {
+        //     setRecipes(allRecipes.filter(recipe => recipe.category === recipeFilter));
+        // }
+
+        if (categoryFilter === 'all' && timeFilter === 'all') {
             setRecipes(allRecipes);
-        } else {
-            setRecipes(allRecipes.filter(recipe => recipe.category === recipeFilter));
+        } else if (categoryFilter === 'all' && timeFilter !== 'all') {
+            setRecipes(allRecipes.filter(recipe => +recipe.time <= +timeFilter));
+        } else if (categoryFilter !== 'all' && timeFilter === 'all') {
+            setRecipes(allRecipes.filter(recipe => recipe.category === categoryFilter));
+        } else if (categoryFilter !== 'all' && timeFilter !== 'all') {
+            setRecipes(allRecipes.filter(recipe => recipe.category === categoryFilter && +recipe.time <= +timeFilter));
         }
 
-    }, [recipeFilter, allRecipes]);
+    }, [categoryFilter, timeFilter, allRecipes]);
 
     const addRecipe = (recipe) => {
         setRecipes([...recipes, recipe]);
@@ -55,12 +70,22 @@ function RecipesContextProvider({ children }) {
         setRecipeFilter(filter);
     }
 
+    const filterRecipesByCategory = (filter) => {
+        setCategoryFilter(filter);
+    }
+
+    const filterRecipesByTime = (filter) => {
+        setTimeFilter(filter);
+    }
+
     const value = {
         recipes,
         categories,
         addRecipe,
         removeRecipe,
         filterRecipes,
+        filterRecipesByCategory,
+        filterRecipesByTime
     }
 
     return (
