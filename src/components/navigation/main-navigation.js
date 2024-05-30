@@ -24,7 +24,7 @@ export default function MainNavigation() {
 
             <div className="main-navigation-right">
                 { user && (
-                    <p className="main-nav-welcome-text">Welcome, <span className="main-nav-welcome-username">{user.username}</span></p>
+                    <p className="main-nav-welcome-text">logged in as <span className="main-nav-welcome-username">{user.username}</span></p>
                 )}
 
                 <NavLink to="/" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Home</NavLink>
