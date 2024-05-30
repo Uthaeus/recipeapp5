@@ -8,7 +8,6 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        background-color: $darkGrey;
 
         .home-title {
             color: $pink200;
@@ -20,6 +19,13 @@
             color: $pink300;
             font-size: 1.2rem;
         }
+    }
+
+    .home-divider {
+        width: 70%;
+        height: 1px;
+        background-color: $pink200;
+        margin: 0 auto 2rem auto;
     }
 
     .home-recipes-container {

@@ -6,6 +6,8 @@ import About from "./pages/about";
 import NewRecipe from "./components/recipes/new-recipe";
 import EditRecipe from "./components/recipes/edit-recipe";
 import RecipeDetail from "./components/recipes/recipe-detail";
+import Register from "./components/auth/register";
+import Login from "./components/auth/login";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,14 @@ const router = createBrowserRouter([
       {
         path: "/recipes/:id",
         element: <RecipeDetail />
+      },
+      {
+        path: "/login",
+        element: <Login />
+      },
+      {
+        path: "/register",
+        element: <Register />
       }
     ]
   }

@@ -21,7 +21,7 @@ export default function MainSidebar() {
 
     const selectCategoryHandler = (cat) => {
         if (pathname !== '/') {
-            navigate('/');
+            navigate('/#home-recipes');
         }
         filterRecipesByCategory(cat);
         setCategoryFilter(cat);
