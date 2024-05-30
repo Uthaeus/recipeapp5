@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 
 import { UserContext } from "../../store/user-context";
@@ -6,10 +6,14 @@ import { UserContext } from "../../store/user-context";
 import logo from '../../assets/images/spaghetti_image.png';
 
 export default function MainNavigation() {
-    const { user } = useContext(UserContext);
+    const { user, logout } = useContext(UserContext);
+
+    const navigate = useNavigate();
 
     const logoutHandler = () => {
         console.log('logging out');
+        navigate('/');
+        logout();
     };
 
     return (

@@ -15,25 +15,25 @@ export default function Login() {
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
 
                 <div className="form-group">
-                    <label htmlFor="email">Email</label>
                     <input
                         type="email"
                         id="email"
                         placeholder="Email"
+                        className="auth-input"
                         {...register("email", { required: true })}
                     />
-                    {errors.email && <p className="error">Email is required</p>}
+                    {errors.email && <p className="text-danger">Email is required</p>}
                 </div>
 
                 <div className="form-group">
-                    <label htmlFor="password">Password</label>
                     <input
                         type="password"
                         id="password"
                         placeholder="Password"
+                        className="auth-input"
                         {...register("password", { required: true })}
                     />
-                    {errors.password && <p className="error">Password is required</p>}
+                    {errors.password && <p className="text-danger">Password is required</p>}
                 </div>
 
                 <button type="submit" className="btn btn-primary">Log In</button>

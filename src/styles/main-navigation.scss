@@ -28,6 +28,7 @@
         transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 
         &:hover {
+            cursor: pointer;
             color: $black;
             transform: scale(1.05);
         }
