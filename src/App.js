@@ -8,6 +8,7 @@ import EditRecipe from "./components/recipes/edit-recipe";
 import RecipeDetail from "./components/recipes/recipe-detail";
 import Register from "./components/auth/register";
 import Login from "./components/auth/login";
+import EditProfile from "./components/auth/edit-profile";
 
 const router = createBrowserRouter([
   {
@@ -41,6 +42,10 @@ const router = createBrowserRouter([
       {
         path: "/register",
         element: <Register />
+      },
+      {
+        path: "/edit-profile",
+        element: <EditProfile />
       }
     ]
   }

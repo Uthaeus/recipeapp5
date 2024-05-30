@@ -31,7 +31,10 @@ export default function MainNavigation() {
                 <NavLink to="/about" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>About</NavLink>
 
                 { user ? (
-                    <p className="main-nav-link" onClick={logoutHandler}>Logout</p>
+                    <>  
+                        <NavLink to="/edit-profile" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Edit Profile</NavLink>
+                        <p className="main-nav-link" onClick={logoutHandler}>Logout</p>
+                    </>
                 ) : (
                     <>
                         <NavLink to="/login" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Login</NavLink>
