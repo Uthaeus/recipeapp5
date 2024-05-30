@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
-import { UserContext } from "../store/user-context";
+import { UserContext } from "../../store/user-context";
 
 export default function EditProfile() {
     const { user } = useContext(UserContext);
@@ -14,7 +14,7 @@ export default function EditProfile() {
     }, [user, reset]);
 
     const onSubmit = (data) => {
-        console.log(data);
+        console.log('editing profile', data);
     };
 
     return (
