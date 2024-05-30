@@ -7,14 +7,69 @@
     .auth-title {
         text-align: center;
         font-size: 3rem;
-        font-weight: 500;
-        margin-bottom: 3rem;
+        font-weight: 600;
+        margin-bottom: 2rem;
         color: $pink200;
     }
 
     .auth-form {
-        width: 80%;
+        width: 60%;
         margin: 0 auto;
+
+        .auth-input {
+            width: 100%;
+            margin: 2rem 0;
+            border: none;
+            font-size: 2em;
+            font-weight: 500;
+            color: $pink300;
+            border-bottom: 2px solid $pink300;
+
+            &:focus {
+                outline: none;
+            }
+
+            &::placeholder {
+                color: $lightGrey;
+            }
+        }
+
+        .auth-btn {
+            width: 25%;
+            margin: 2rem 0;
+            padding: 0.15rem 0;
+            border: none;
+            border-radius: 4px;
+            font-weight: 500;
+            color: $lightGrey;
+            background-color: $pink300;
+            box-shadow: 3px 3px 2px $lightGrey;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out, color 0.3s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+                background-color: $pink200;
+                color: $darkGrey;
+                transform: scale(1.02);
+            }
+        }
+
+        .auth-text {
+            text-align: center;
+        }
+
+        .auth-link {
+            font-size: 1.1em;
+            margin-left: 0.5rem;
+            margin-top: 2rem;
+            color: $pink300;
+            transition: color 0.3s ease-in-out;
+
+            &:hover {
+                cursor: pointer;
+                color: $pink100;
+            }
+        }
     }
 
     .auth-home-link {

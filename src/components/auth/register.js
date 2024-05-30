@@ -14,51 +14,44 @@ export default function Register() {
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
 
-                <div className="form-group">
-                    <input
-                        type="email"
-                        id="email"
-                        placeholder="Email"
-                        className="auth-input"
-                        {...register("email", { required: true })}
-                    />
-                    {errors.email && <p className="text-danger">Email is required</p>}
-                </div>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Email"
+                    className="auth-input"
+                    autoFocus={true}
+                    {...register("email", { required: true })}
+                />
+                {errors.email && <p className="text-danger">Email is required</p>}
 
-                <div className="form-group">
-                    <input
-                        type="text"
-                        id="username"
-                        placeholder="Username"
-                        className="auth-input"
-                        {...register("username", { required: true })}
-                    />
-                    {errors.username && <p className="text-danger">Username is required</p>}
-                </div>
+                <input
+                    type="text"
+                    id="username"
+                    placeholder="Username"
+                    className="auth-input"
+                    {...register("username", { required: true })}
+                />
+                {errors.username && <p className="text-danger">Username is required</p>}
 
-                <div className="form-group">
-                    <input
-                        type="password"
-                        id="password"
-                        placeholder="Password"
-                        className="auth-input"
-                        {...register("password", { required: true })}
-                    />
-                    {errors.password && <p className="text-danger">Password is required</p>}
-                </div>
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Password"
+                    className="auth-input"
+                    {...register("password", { required: true })}
+                />
+                {errors.password && <p className="text-danger">Password is required</p>}
 
-                <div className="form-group">
-                    <input
-                        type="password"
-                        id="confirmPassword"
-                        placeholder="Confirm Password"
-                        className="auth-input"
-                        {...register("confirmPassword", { required: true })}
-                    />
-                    {errors.confirmPassword && <p className="text-danger">Confirm Password is required</p>}
-                </div>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    placeholder="Confirm Password"
+                    className="auth-input"
+                    {...register("confirmPassword", { required: true })}
+                />
+                {errors.confirmPassword && <p className="text-danger">Confirm Password is required</p>}
 
-                <button type="submit" className="btn btn-primary">Register</button>
+                <button type="submit" className="auth-btn">Register</button>
 
                 <p className="auth-text">Already have an account? <Link to="/login" className="auth-link">Login</Link></p>
             </form>

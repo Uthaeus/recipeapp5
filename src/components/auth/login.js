@@ -36,10 +36,12 @@ export default function Login() {
                     {errors.password && <p className="text-danger">Password is required</p>}
                 </div>
 
-                <button type="submit" className="btn btn-primary">Log In</button>
+                <button type="submit" className="auth-btn">Log In</button>
 
                 <p className="auth-text">Already have an account? <Link to="/register" className="auth-link">Register</Link></p>
             </form>
+
+            <Link to='/' className="auth-home-link">Return Home</Link>
         </div>
     );
 }
