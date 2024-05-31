@@ -25,11 +25,6 @@ export default function RecipeDetail() {
                 <h1 className="recipe-detail-title">{recipe?.name}</h1>
                 <p className="recipe-detail-description">{recipe?.description}</p>
 
-                <div className="recipe-detail-header-details">
-                    <p className="recipe-detail-author-wrapper">Submitted By <span className="recipe-detail-author mx-2">{recipe?.author}</span></p>
-                    <p className="recipe-detail-date-wrapper">posted <span className="recipe-detail-date mx-2">{recipe?.date}</span></p>
-                </div>
-
                 {(user.id === recipe?.uid || isAdmin) && (
                     <Link to={`/recipes/${id}/edit`} className="recipe-detail-edit-link">Edit Recipe</Link>
                 )}
@@ -37,6 +32,11 @@ export default function RecipeDetail() {
 
             <div className="recipe-detail-image-wrapper">
                 <img src={image} alt="spaghetti" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
+            </div>
+
+            <div className="recipe-detail-header-details">
+                <p className="recipe-detail-author-wrapper">Submitted By <span className="recipe-detail-author mx-2">{recipe?.author}</span></p>
+                <p className="recipe-detail-date-wrapper">posted <span className="recipe-detail-date mx-2">{recipe?.date}</span></p>
             </div>
 
             <div className="recipe-detail-body">
@@ -71,9 +71,7 @@ export default function RecipeDetail() {
                 </div>
             </div>
 
-            <div className="recipe-detail-actions">
-                <Link to="/" className="btn btn-primary">Back to Recipes</Link>
-            </div>
+            <Link to="/" className="recipe-detail-back-btn">Back to Recipes</Link>
         </div>
     );
 }

@@ -43,16 +43,29 @@ export default function MainSidebar() {
         setTimeFilter('all');
     };
 
+    const resetAllHandler = () => {
+        if (pathname !== '/') {
+            navigate('/');
+        }
+        filterRecipesByCategory('all');
+        setCategoryFilter('all');
+        filterRecipesByTime('all');
+        setTimeFilter('all');
+    };
+
     return (
         <div className="main-sidebar">
             { user && <Link to="/recipes/new" className="new-recipe-link">Add New Recipe</Link>}
 
             <h1 className="sidebar-title">Filter Recipes</h1>
 
+            <p onClick={resetAllHandler} className="sidebar-reset-btn">Reset All</p>
+
             <div className="sidebar-container">
                 <h2 className="sidebar-subtitle">By Category</h2>
 
-                <p onClick={() => selectCategoryHandler('all')} className={categoryFilter === 'all' ? "sidebar-category sidebar-category-active" : "sidebar-category"}>All</p>
+                <p className="sidebar-reset-btn" onClick={() => selectCategoryHandler('all')}>Reset Category Filter</p>
+                {/* <p onClick={() => selectCategoryHandler('all')} className={categoryFilter === 'all' ? "sidebar-category sidebar-category-active" : "sidebar-category"}>All</p> */}
 
                 <div className="sidebar-categories-container">
                     {categories.map(category => (
@@ -67,6 +80,8 @@ export default function MainSidebar() {
             <div className="sidebar-container">
                 <h2 className="sidebar-subtitle">By Time</h2>
 
+                <p className="sidebar-reset-btn" onClick={resetTimeHandler}>Reset Time Filter</p>
+
                 <select value={timeFilter} name="time" id="time" className="form-select sidebar-select" onChange={(e) => selectTimeHandler(e.target.value)}>
                     <option value='all'>Any time</option>
                     <option value="15">15 minutes or less</option>
@@ -75,7 +90,7 @@ export default function MainSidebar() {
                     <option value="60">60 minutes or less</option>
                 </select>
 
-                <p className="sidebar-time-reset-btn" onClick={resetTimeHandler}>Reset Time Filter</p>
+                
             </div>
         </div>
     );

@@ -1,5 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 import { RecipesContext } from "../../store/recipes-context";
 
@@ -15,10 +16,16 @@ export default function EditRecipe() {
     }, [recipes, id]);
 
     return (
-        <div>
-            <h1>Edit Recipe</h1>
+        <div className="recipe-container">
+            <h1 className="recipe-title">Edit Recipe</h1>
 
             <RecipeForm recipe={recipe} />
+
+            <div className="recipe-actions">
+                <button className="btn btn-danger mx-2">Delete Recipe</button>
+                <Link to={`/recipes/${id}`} className="btn btn-secondary mx-2">Back to Recipe</Link>
+                <Link to="/" className="btn btn-secondary mx-2">Cancel</Link>
+            </div>
         </div>
     );
 }
