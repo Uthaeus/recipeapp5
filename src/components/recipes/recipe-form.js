@@ -1,11 +1,12 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router";
 
 import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
 export default function RecipeForm({ recipe }) {
-  const { categories } = useContext(RecipesContext);
+  const { categories, addRecipe } = useContext(RecipesContext);
   const { user } = useContext(UserContext);
   const {
     register,
@@ -19,6 +20,8 @@ export default function RecipeForm({ recipe }) {
   const [steps, setSteps] = useState([]);
   const [step, setStep] = useState("");
   const [categoryToggle, setCategoryToggle] = useState(false);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (recipe) {
@@ -59,8 +62,34 @@ export default function RecipeForm({ recipe }) {
     reset({ category: "" });
   };
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+    const newDate = new Date().toISOString().split('T')[0];
+
+    // temp id
+    const tempId = (Math.random() * 1000).toString();
+
+    const newRecipe = {
+      id: recipe ? recipe.id : tempId,
+      name: data.name,
+      description: data.description,
+      ingredients: ingredients,
+      steps: steps,
+      category: data.category,
+      time: data.time,
+      author: user.username,
+      uid: user.id,
+      date: recipe ? recipe.date : newDate
+    };
+    
+    console.log('recipe form submit', newRecipe);
+
+    try {
+      addRecipe(newRecipe);
+    } catch (error) {
+      console.log('recipe form submit error: ', error);
+    } finally {
+      navigate(`/recipes/${newRecipe.id}`);
+    }
   };
 
   return (
@@ -72,6 +101,7 @@ export default function RecipeForm({ recipe }) {
             <input
               type="text"
               className="form-control"
+              id="name"
               autoFocus={true}
               {...register("name", { required: true })}
             />
@@ -86,6 +116,7 @@ export default function RecipeForm({ recipe }) {
             <input
               type="text"
               className="form-control"
+              id="description"
               {...register("description", { required: true })}
             />
             {errors.description && (
@@ -102,6 +133,7 @@ export default function RecipeForm({ recipe }) {
             {!categoryToggle && (
               <select
                 className="form-select"
+                id="category"
                 {...register("category", { required: true })}
                 onChange={selectCategoryHandler}
               >
@@ -119,6 +151,7 @@ export default function RecipeForm({ recipe }) {
                 <input
                   type="text"
                   className="form-control"
+                  id="category"
                   placeholder="enter custom category"
                   {...register("category", { required: true })}
                 />
@@ -136,6 +169,7 @@ export default function RecipeForm({ recipe }) {
             <label htmlFor="time">Approx. Time (in minutes)</label>
             <select
               className="form-select"
+              id="time"
               {...register("time", { required: true })}
             >
               <option value="">select time</option>
@@ -238,7 +272,7 @@ export default function RecipeForm({ recipe }) {
         </div>
       </div>
 
-      <button className="btn btn-primary">
+      <button className="recipe-form-btn">
         {recipe ? "Update Recipe" : "Add New Recipe"}
       </button>
     </form>

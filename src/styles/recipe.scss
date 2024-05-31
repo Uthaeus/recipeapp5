@@ -100,4 +100,24 @@
         border-bottom: 1px solid $black;
         word-wrap: break-word;
     }
+
+    .recipe-form-btn {
+        width: max-content;
+        margin: 2rem 0;
+        padding: 0.25rem 2rem;
+        border: none;
+        background-color: $pink300;
+        color: $lightGrey;
+        font-weight: 600;
+        font-size: 0.9em;
+        border-radius: 3px;
+        box-shadow: 2px 2px 3px rgba(0, 0, 0, 0.2);
+        transition: color 0.3s ease-in-out, background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+        &:hover {
+            color: $darkGrey;
+            background-color: $pink200;
+            transform: scale(1.02);
+        }
+    }
 }

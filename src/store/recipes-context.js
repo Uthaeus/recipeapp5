@@ -59,11 +59,11 @@ function RecipesContextProvider({ children }) {
     }, [categoryFilter, timeFilter, allRecipes]);
 
     const addRecipe = (recipe) => {
-        setRecipes([...recipes, recipe]);
+        setAllRecipes([...allRecipes, recipe]);
     }
 
     const removeRecipe = (id) => {
-        setRecipes(recipes.filter(recipe => recipe.id !== id));
+        setAllRecipes(allRecipes.filter(recipe => recipe.id !== id));
     }
 
     const filterRecipes = (filter) => {
