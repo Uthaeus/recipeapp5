@@ -24,18 +24,10 @@ export default function MainNavigation() {
             </div>
 
             <div className="main-navigation-right">
-                { user && (
-                    <p className="main-nav-welcome-text">logged in as <span className="main-nav-welcome-username">{user.username}</span></p>
-                )}
 
                 <NavLink to="/" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Recipes</NavLink>
 
-                { user ? (
-                    <>  
-                        <NavLink to="/edit-profile" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Edit Profile</NavLink>
-                        <p className="main-nav-link" onClick={logoutHandler}>Logout</p>
-                    </>
-                ) : (
+                { !user && (
                     <>
                         <NavLink to="/login" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Login</NavLink>
                         <NavLink to="/register" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Register</NavLink>

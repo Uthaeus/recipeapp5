@@ -1,5 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 
 import { UserContext } from "../../store/user-context";
 
@@ -9,19 +9,38 @@ export default function AccountNavItem() {
     const { user, logout } = useContext(UserContext);
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isMouseOverDropdown, setIsMouseOverDropdown] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const delay = 900; // Adjust the delay time as needed (in milliseconds)
+        let timeoutId;
+
+        if (isDropdownOpen) {
+            timeoutId = setTimeout(() => {
+                closeDropdown();
+            }, delay);
+        }
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [isDropdownOpen, isMouseOverDropdown]);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(prev => !prev);
     };
 
     const closeDropdown = () => {
-        setIsDropdownOpen(false);
+        if (!isMouseOverDropdown) {
+            setIsDropdownOpen(false);
+        }
     };
 
     const openDropdown = () => {
         setIsDropdownOpen(true);
+        setIsMouseOverDropdown(true);
     };
 
     const logoutHandler = () => {
@@ -31,14 +50,16 @@ export default function AccountNavItem() {
     };
 
     return (
-        <div className="account-nav-item" onClick={toggleDropdown} onMouseLeave={closeDropdown} onMouseOver={openDropdown}>
+        <div className="account-nav-item" onClick={toggleDropdown} onMouseLeave={() => closeDropdown()} onMouseOver={openDropdown}>
             <img src={avatar} alt="avatar" className="account-nav-item__avatar" />
             <p className="account-nav-item__username">{user.username}</p>
 
             {isDropdownOpen && (
-                <div className="account-nav-item__dropdown">
-                    <NavLink to="/edit-profile" className="account-nav-item__dropdown-item">Edit Profile</NavLink>
-                    <p className="account-nav-item__dropdown-item" onClick={logoutHandler}>Logout</p>
+                <div className='account-nav-item__dropdown-container'>
+                    <div className={`account-nav-item__dropdown ${isDropdownOpen ? 'open' : ''}`} onMouseLeave={() => setIsMouseOverDropdown(false)} onMouseOver={() => setIsMouseOverDropdown(true)}>
+                        <NavLink to="/edit-profile" className="account-nav-item__dropdown-item">Edit Profile</NavLink>
+                        <p className="account-nav-item__dropdown-item" onClick={logoutHandler}>Logout</p>
+                    </div>
                 </div>
             )}
         </div>
