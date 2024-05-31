@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { UserContext } from "../../store/user-context";
 
 import logo from '../../assets/images/spaghetti_image.png';
+import AccountNavItem from "./account-nav-item";
 
 export default function MainNavigation() {
     const { user, logout } = useContext(UserContext);
@@ -27,8 +28,7 @@ export default function MainNavigation() {
                     <p className="main-nav-welcome-text">logged in as <span className="main-nav-welcome-username">{user.username}</span></p>
                 )}
 
-                <NavLink to="/" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Home</NavLink>
-                <NavLink to="/about" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>About</NavLink>
+                <NavLink to="/" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Recipes</NavLink>
 
                 { user ? (
                     <>  
@@ -41,6 +41,8 @@ export default function MainNavigation() {
                         <NavLink to="/register" className={({ isActive }) => isActive ? "main-nav-link main-nav-link-active" : "main-nav-link"}>Register</NavLink>
                     </>
                 )}
+
+                { user && <AccountNavItem /> }
             </div>
         </div>
     );

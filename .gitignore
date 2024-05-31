@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/src/assets/*
+
 # production
 /build
 
