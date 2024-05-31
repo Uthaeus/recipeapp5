@@ -7,6 +7,7 @@ export const RecipesContext = createContext({
     categories: [],
     addRecipe: () => {},
     removeRecipe: () => {},
+    updateRecipe: () => {},
     filterRecipes: () => {},
     filterRecipesByCategory: () => {},
     filterRecipesByTime: () => {},
@@ -60,6 +61,10 @@ function RecipesContextProvider({ children }) {
 
     const addRecipe = (recipe) => {
         setAllRecipes([...allRecipes, recipe]);
+    }
+
+    const updateRecipe = (recipe) => {
+        setAllRecipes(allRecipes.map(r => r.id === recipe.id ? recipe : r));
     }
 
     const removeRecipe = (id) => {

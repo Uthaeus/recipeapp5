@@ -6,7 +6,7 @@ import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
 export default function RecipeForm({ recipe }) {
-  const { categories, addRecipe } = useContext(RecipesContext);
+  const { categories, addRecipe, updateRecipe } = useContext(RecipesContext);
   const { user } = useContext(UserContext);
   const {
     register,
@@ -76,15 +76,19 @@ export default function RecipeForm({ recipe }) {
       steps: steps,
       category: data.category,
       time: data.time,
-      author: user.username,
-      uid: user.id,
+      author: recipe ? recipe.author : user.username,
+      uid: recipe ? recipe.uid : user.uid,
       date: recipe ? recipe.date : newDate
     };
     
     console.log('recipe form submit', newRecipe);
 
     try {
-      addRecipe(newRecipe);
+      if (recipe) {
+        updateRecipe(newRecipe);
+      } else {
+        addRecipe(newRecipe);
+      }
     } catch (error) {
       console.log('recipe form submit error: ', error);
     } finally {
