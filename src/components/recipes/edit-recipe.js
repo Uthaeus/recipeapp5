@@ -31,7 +31,7 @@ export default function EditRecipe() {
             <div className="recipe-actions">
                 <button onClick={deleteRecipeHandler} className="btn btn-danger mx-2">Delete Recipe</button>
                 <Link to={`/recipes/${id}`} className="btn btn-secondary mx-2">Back to Recipe</Link>
-                <Link to="/" className="btn btn-secondary mx-2">Cancel</Link>
+                <Link to="/" className="btn btn-primary mx-2">Cancel</Link>
             </div>
         </div>
     );

@@ -25,7 +25,7 @@ export default function RecipeDetail() {
                 <h1 className="recipe-detail-title">{recipe?.name}</h1>
                 <p className="recipe-detail-description">{recipe?.description}</p>
 
-                {(user.id === recipe?.uid || isAdmin) && (
+                {(user?.id === recipe?.uid || isAdmin) && (
                     <Link to={`/recipes/${id}/edit`} className="recipe-detail-edit-link">Edit Recipe</Link>
                 )}
             </div>

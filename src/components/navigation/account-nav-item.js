@@ -55,11 +55,9 @@ export default function AccountNavItem() {
             <p className="account-nav-item__username">{user.username}</p>
 
             {isDropdownOpen && (
-                <div className='account-nav-item__dropdown-container'>
-                    <div className={`account-nav-item__dropdown ${isDropdownOpen ? 'open' : ''}`} onMouseLeave={() => setIsMouseOverDropdown(false)} onMouseOver={() => setIsMouseOverDropdown(true)}>
-                        <NavLink to="/edit-profile" className="account-nav-item__dropdown-item">Edit Profile</NavLink>
-                        <p className="account-nav-item__dropdown-item" onClick={logoutHandler}>Logout</p>
-                    </div>
+                <div className={`account-nav-item__dropdown`} onMouseLeave={() => setIsMouseOverDropdown(false)} onMouseOver={() => setIsMouseOverDropdown(true)}>
+                    <NavLink to="/edit-profile" className="account-nav-item__dropdown-item">Edit Profile</NavLink>
+                    <p className="account-nav-item__dropdown-item" onClick={logoutHandler}>Logout</p>
                 </div>
             )}
         </div>

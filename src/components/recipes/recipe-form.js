@@ -5,6 +5,8 @@ import { useNavigate } from "react-router";
 import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
+import image from '../../assets/images/guest-icon-add.png';
+
 export default function RecipeForm({ recipe }) {
   const { categories, addRecipe, updateRecipe } = useContext(RecipesContext);
   const { user } = useContext(UserContext);
@@ -20,6 +22,7 @@ export default function RecipeForm({ recipe }) {
   const [steps, setSteps] = useState([]);
   const [step, setStep] = useState("");
   const [categoryToggle, setCategoryToggle] = useState(false);
+  const [enteredImage, setEnteredImage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -28,8 +31,27 @@ export default function RecipeForm({ recipe }) {
       reset(recipe);
       setIngredients(recipe.ingredients);
       setSteps(recipe.steps);
+
+      if (recipe.image) {
+        setEnteredImage({url: recipe.image});
+      }
     }
   }, [recipe, reset]);
+
+  const imageChangeHandler = (event) => {
+    const file = event.target.files[0];
+    // create url object
+    const url = URL.createObjectURL(file);
+    setEnteredImage({ url, file });
+  }
+
+  const removeImageHandler = () => {
+    setEnteredImage(null);
+  }
+
+  const openImageInputHandler = () => {
+    document.getElementById('image-input').click();
+  }
 
   const addIngredientHandler = () => {
     setIngredients([...ingredients, { ingredient, ingredientAmount }]);
@@ -98,6 +120,7 @@ export default function RecipeForm({ recipe }) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="recipe-form">
+      
       <div className="row">
         <div className="col-md-4">
           <div className="form-group mb-3">
@@ -276,9 +299,30 @@ export default function RecipeForm({ recipe }) {
         </div>
       </div>
 
-      <button className="recipe-form-btn">
-        {recipe ? "Update Recipe" : "Add New Recipe"}
-      </button>
+      
+      <div className="row">
+        <div className="col-md-8">
+          <button className="recipe-form-btn">
+            {recipe ? "Update Recipe" : "Add New Recipe"}
+          </button>
+        </div>
+
+        <div className="col-md-4">
+          <div className="recipe-form-image-container">
+            <div className="recipe-form-image-input-wrapper" onClick={openImageInputHandler}>
+              <img src={enteredImage ? enteredImage.url : image} alt="spaghetti" width='100%' />
+              <p className="mt-2">Add Image</p>
+              <input 
+                type="file"
+                id="image-input"
+                className="d-none"
+                onChange={imageChangeHandler}
+              />
+            </div>
+            <p className="recipe-form-image-remove" onClick={removeImageHandler}>Reset Image</p>
+          </div>
+        </div>
+      </div>
     </form>
   );
 }

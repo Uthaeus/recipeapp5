@@ -17,13 +17,43 @@
     .recipe-actions {
         position: absolute;
         bottom: 2rem;
-        right: 5%;
+        left: 5%;
     }
 }
 
 .recipe-form {
     width: 90%;
     margin: 2rem auto;
+
+    .recipe-form-image-container {
+        width: 100%;
+
+        .recipe-form-image-input-wrapper {
+            cursor: pointer;
+            color: $pink300;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+            &:hover {
+                color: $pink200;
+                transform: scale(1.02);
+            }
+        }
+
+        .recipe-form-image-remove {
+            text-align: end;
+            cursor: pointer;
+            color: red;
+            font-weight: 600;
+            transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
+
+            &:hover {
+                color: rgb(117, 29, 29);
+                transform: scale(1.02);
+            }
+        }
+    }
 
     label {
         font-weight: 600;
