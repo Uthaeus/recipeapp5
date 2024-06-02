@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 
-import { dummyAdmin, dummyUser } from "./dummy/dummy-users";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { getDoc, doc } from "firebase/firestore";
+
+import { auth, db } from "../firebase";
 
 export const UserContext = createContext({
     user: null,
@@ -15,11 +18,30 @@ function UserContextProvider({ children }) {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        setUser(dummyAdmin);
-        setLoading(false);
+        const unsubscribe = onAuthStateChanged(auth, initializeUser);
+        return () => unsubscribe();
     }, []);
 
+    const initializeUser = async (user) => {
+        if (user) {
+
+            const docRef = doc(db, "users", user.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+
+                const userData = docSnap.data();
+                setUser({ id: user.uid, ...userData });
+
+            }
+        } else {
+            setUser(null);
+        }
+
+        setLoading(false);
+    }
+
     const logout = () => {
+        signOut(auth);
         setUser(null);
     }
 
