@@ -2,6 +2,11 @@ import { useForm } from "react-hook-form";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 
+import { addDoc, doc, updateDoc, collection } from "firebase/firestore";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+
+import { db, storage } from "../../firebase";
+
 import { RecipesContext } from "../../store/recipes-context";
 import { UserContext } from "../../store/user-context";
 
@@ -49,6 +54,15 @@ export default function RecipeForm({ recipe }) {
     setEnteredImage(null);
   }
 
+  const getImageUrlHandler = async () => {
+    const imageName = enteredImage.file.name + Date.now();
+    const imageRef = ref(storage, `images/${imageName}`);
+    
+    const snapshot = await uploadBytes(imageRef, enteredImage.file);
+    const url = await getDownloadURL(snapshot.ref);
+    return url;
+  }
+
   const openImageInputHandler = () => {
     document.getElementById('image-input').click();
   }
@@ -86,35 +100,63 @@ export default function RecipeForm({ recipe }) {
 
   const onSubmit = async (data) => {
     const newDate = new Date().toISOString().split('T')[0];
+    let recipeId;
+    let imageUrl = null;
+    console.log('recipe form submit');
 
-    // temp id
-    const tempId = (Math.random() * 1000).toString();
-
-    const newRecipe = {
-      id: recipe ? recipe.id : tempId,
-      name: data.name,
-      description: data.description,
-      ingredients: ingredients,
-      steps: steps,
-      category: data.category,
-      time: data.time,
-      author: recipe ? recipe.author : user.username,
-      uid: recipe ? recipe.uid : user.uid,
-      date: recipe ? recipe.date : newDate
-    };
-    
-    console.log('recipe form submit', newRecipe);
+    if (recipe && enteredImage && enteredImage.url !== recipe.image) {
+      imageUrl = await getImageUrlHandler();
+    } else if (recipe && enteredImage && enteredImage.url === recipe.image) {
+      imageUrl = recipe.image;
+    } else if (!recipe && enteredImage) {
+      imageUrl = await getImageUrlHandler();
+    }
 
     try {
+
       if (recipe) {
-        updateRecipe(newRecipe);
+        recipeId = recipe.id;
+
+        const newRecipe = {
+          name: data.name,
+          description: data.description,
+          ingredients: ingredients,
+          steps: steps,
+          category: data.category,
+          time: data.time,
+          author: recipe.author,
+          uid: recipe.uid,
+          date: recipe.date,
+          updated_at: newDate,
+          image: imageUrl
+        }
+
+        await updateDoc(doc(db, "recipes", recipe.id), newRecipe);
+
+        updateRecipe({ ...newRecipe, id: recipe.id });
+
       } else {
-        addRecipe(newRecipe);
+        const newRecipe = {
+          name: data.name,
+          description: data.description,
+          ingredients: ingredients,
+          steps: steps,
+          category: data.category,
+          time: data.time,
+          author: user.username,
+          uid: user.id,
+          date: newDate,
+          image: imageUrl
+        }
+
+        const docRef = await addDoc(collection(db, "recipes"), newRecipe);
+        recipeId = docRef.id;
+        addRecipe({ ...newRecipe, id: recipeId });
       }
     } catch (error) {
       console.log('recipe form submit error: ', error);
     } finally {
-      navigate(`/recipes/${newRecipe.id}`);
+      navigate(`/recipes/${recipeId}`);
     }
   };
 

@@ -1,6 +1,7 @@
 import { createContext, useState, useEffect } from "react";
 
-import { dummyRecipes } from "./dummy/dummy-recipes";
+import { getDocs, query, collection, deleteDoc, doc } from "firebase/firestore";
+import { db } from "../firebase";
 
 export const RecipesContext = createContext({
     recipes: [],
@@ -25,27 +26,30 @@ function RecipesContextProvider({ children }) {
     const [timeFilter, setTimeFilter] = useState('all');
 
     useEffect(() => {
-        const categoriesList = [];
-        const allRecipesList = [];
-        dummyRecipes.forEach(recipe => {
-            if (!categoriesList.includes(recipe.category)) {
-                categoriesList.push(recipe.category);
-            }
-            allRecipesList.push(recipe);
-        });
-        setCategories(categoriesList);
-        setAllRecipes(allRecipesList);
 
-        setLoading(false);
-    }, []);
+        const getRecipes = async () => {
+            const categoryFilterList = [];
+
+            const recipesQuery = query(collection(db, 'recipes'));
+            const recipesSnapshot = await getDocs(recipesQuery);
+            const recipesList = recipesSnapshot.docs.map(doc => {
+                if (!categoryFilterList.includes(doc.data().category)) {
+                    categoryFilterList.push(doc.data().category);
+                }
+                return { id: doc.id, ...doc.data() }
+            });
+            setRecipes(recipesList);
+            setAllRecipes(recipesList);
+
+            setCategories(categoryFilterList);
+            setLoading(false);
+        };
+
+        getRecipes();
+    }, [ ]);
 
 
     useEffect(() => {
-        // if (recipeFilter === 'all') {
-        //     setRecipes(allRecipes);
-        // } else {
-        //     setRecipes(allRecipes.filter(recipe => recipe.category === recipeFilter));
-        // }
 
         if (categoryFilter === 'all' && timeFilter === 'all') {
             setRecipes(allRecipes);
@@ -68,6 +72,8 @@ function RecipesContextProvider({ children }) {
     }
 
     const removeRecipe = (id) => {
+        const docRef = doc(db, 'recipes', id);
+        deleteDoc(docRef);
         setAllRecipes(allRecipes.filter(recipe => recipe.id !== id));
     }
 
@@ -87,6 +93,7 @@ function RecipesContextProvider({ children }) {
         recipes,
         categories,
         addRecipe,
+        updateRecipe,
         removeRecipe,
         filterRecipes,
         filterRecipesByCategory,
