@@ -42,6 +42,10 @@ function UserContextProvider({ children }) {
         }
     }
 
+    const updateUser = (user) => {
+        setUser(user);
+    }
+
     const logout = () => {
         signOut(auth);
         setUser(null);
@@ -50,6 +54,7 @@ function UserContextProvider({ children }) {
     const value = {
         user,
         isAdmin: user?.role === "admin",
+        updateUser,
         logout
     }
 

@@ -10,7 +10,7 @@ import { auth, db } from "../../firebase";
 import { UserContext } from "../../store/user-context";
 
 export default function EditProfile() {
-    const { user } = useContext(UserContext);
+    const { user, updateUser } = useContext(UserContext);
 
     const navigate = useNavigate();
 
@@ -68,6 +68,8 @@ export default function EditProfile() {
                 username: data.username,
                 email: data.email
             });
+
+            updateUser({ ...user, username: data.username, email: data.email });
 
             console.log('end of edit profile submit');
 
