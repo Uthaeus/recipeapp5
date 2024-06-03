@@ -1,11 +1,28 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+import { auth } from "../../firebase";
 
 export default function Login() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const navigate = useNavigate();
+
+    const onSubmit = async (data) => {
+        if (data.password.length < 6) {
+            setError('password', { type: 'custom', message: 'Password must be at least 6 characters' });
+            return;
+        }
+
+        try {
+            await signInWithEmailAndPassword(auth, data.email, data.password);
+        } catch (error) {
+            console.error('login user error:', error);
+        } finally {
+            navigate('/');
+        }
     };
 
     return (

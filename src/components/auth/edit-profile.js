@@ -1,20 +1,82 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
+
+import { updateDoc } from "firebase/firestore";
+import { updateProfile, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
+
+import { auth, db } from "../../firebase";
 
 import { UserContext } from "../../store/user-context";
 
 export default function EditProfile() {
     const { user } = useContext(UserContext);
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const navigate = useNavigate();
+
+    const { register, handleSubmit, formState: { errors }, reset, setError } = useForm();
 
     useEffect(() => {
         reset(user);
     }, [user, reset]);
 
-    const onSubmit = (data) => {
+    const reauthenticateUser = async (password) => {
+        const credential = EmailAuthProvider.credential(user.email, password);
+        try {
+            await reauthenticateWithCredential(auth.currentUser, credential);
+
+            return true;
+        } catch (error) {
+            console.log('reauthenticate user error:', error);
+            setError('password', { type: 'custom', message: 'Incorrect password' });
+
+            return false;
+        }
+    }
+
+    const onSubmit = async (data) => {
         console.log('editing profile', data);
+
+        try {
+            const newPasswordAuthorized = await reauthenticateUser(data.password);
+
+            if (!newPasswordAuthorized) {
+                setError('password', { type: 'custom', message: 'Incorrect password' });
+
+                return;
+            }
+
+            if (data.newPassword !== "") {
+                if (data.newPassword !== data.confirmNewPassword) {
+                    setError('confirmNewPassword', { type: 'custom', message: 'Passwords do not match' });
+                    return;
+                }
+                if (data.newPassword.length < 6) {
+                    setError('newPassword', { type: 'custom', message: 'Password must be at least 6 characters' });
+                    return;
+                }
+
+                await updatePassword(auth.currentUser, data.newPassword);
+            }
+
+            await updateProfile(auth.currentUser, {
+                displayName: data.username,
+                email: data.email
+            });
+
+            await updateDoc(doc(db, "users", user.id), {
+                username: data.username,
+                email: data.email
+            });
+
+            console.log('end of edit profile submit');
+
+        } catch (error) {
+            console.error('edit profile error:', error);
+        } finally {
+            navigate('/');
+        }
+        
     };
 
     return (
@@ -60,7 +122,7 @@ export default function EditProfile() {
                 <input 
                     type="password"
                     id="password"
-                    placeholder="Current Password"
+                    placeholder="Enter Current Password to Update Profile"
                     className="auth-input"
                     {...register("currentPassword", { required: true })}
                 />
