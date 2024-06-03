@@ -1,11 +1,39 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
+
+import { auth, db } from "../../firebase";
 
 export default function Register() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
 
-    const onSubmit = (data) => {
-        console.log(data);
+    const navigate = useNavigate();
+
+    const onSubmit = async (data) => {
+        if (data.password !== data.confirmPassword) {
+            setError('confirmPassword', { type: 'custom', message: 'Passwords do not match' });
+            return;
+        }
+        if (data.password.length < 6) {
+            setError('password', { type: 'custom', message: 'Password must be at least 6 characters' });
+            return;
+        }
+
+        try {
+            const { user } = await createUserWithEmailAndPassword(auth, data.email, data.password);
+            await setDoc(doc(db, "users", user.uid), {
+                username: data.username,
+                email: data.email,
+                role: "user",
+                created: new Date(),
+            });
+        } catch (error) {
+            console.error('register user error:', error);
+        } finally {
+            navigate('/');
+        }
     };
 
     return (

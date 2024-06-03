@@ -14,7 +14,7 @@ export default function AccountNavItem() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        const delay = 900; // Adjust the delay time as needed (in milliseconds)
+        const delay = 800; 
         let timeoutId;
 
         if (isDropdownOpen) {
