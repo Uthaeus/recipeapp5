@@ -65,10 +65,16 @@ function RecipesContextProvider({ children }) {
 
     const addRecipe = (recipe) => {
         setAllRecipes([...allRecipes, recipe]);
+        if (!categories.includes(recipe.category)) {
+            setCategories([...categories, recipe.category]);
+        }
     }
 
     const updateRecipe = (recipe) => {
         setAllRecipes(allRecipes.map(r => r.id === recipe.id ? recipe : r));
+        if (!categories.includes(recipe.category)) {
+            setCategories([...categories, recipe.category]);
+        }
     }
 
     const removeRecipe = (id) => {

@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect } from "react";
 
-import { updateDoc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 import { updateProfile, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
 
 import { auth, db } from "../../firebase";
@@ -38,9 +38,9 @@ export default function EditProfile() {
         console.log('editing profile', data);
 
         try {
-            const newPasswordAuthorized = await reauthenticateUser(data.password);
+            const isAuthorized = await reauthenticateUser(data.password);
 
-            if (!newPasswordAuthorized) {
+            if (!isAuthorized) {
                 setError('password', { type: 'custom', message: 'Incorrect password' });
 
                 return;
@@ -71,10 +71,10 @@ export default function EditProfile() {
 
             console.log('end of edit profile submit');
 
+            navigate('/');
+
         } catch (error) {
             console.error('edit profile error:', error);
-        } finally {
-            navigate('/');
         }
         
     };
@@ -108,7 +108,7 @@ export default function EditProfile() {
                     id="newPassword"
                     placeholder="New Password (leave blank if you don't want to change it)"
                     className="auth-input"
-                    {...register("password")}
+                    {...register("newPassword")}
                 />
 
                 <input
@@ -124,7 +124,7 @@ export default function EditProfile() {
                     id="password"
                     placeholder="Enter Current Password to Update Profile"
                     className="auth-input"
-                    {...register("currentPassword", { required: true })}
+                    {...register("password", { required: true })}
                 />
                 {errors.password && <p className="text-danger">Current Password is required</p>}
 

@@ -18,6 +18,8 @@ export default function RecipeDetail() {
         setRecipe(recipes.find(r => r.id === id));
     }, [recipes, id]);
 
+    const recipeImage = recipe?.image ? recipe?.image : image;
+
     return (
         <div className="recipe-detail">
 
@@ -31,7 +33,7 @@ export default function RecipeDetail() {
             </div>
 
             <div className="recipe-detail-image-wrapper">
-                <img src={image} alt="spaghetti" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
+                <img src={recipeImage} alt="spaghetti" style={{ width: '100%', maxHeight: '250px', objectFit: 'cover', objectPosition: 'center' }} />
             </div>
 
             <div className="recipe-detail-header-details">

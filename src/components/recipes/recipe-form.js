@@ -106,8 +106,11 @@ export default function RecipeForm({ recipe }) {
 
     if (recipe && enteredImage && enteredImage.url !== recipe.image) {
       imageUrl = await getImageUrlHandler();
-      const imageRef = ref(storage, recipe.image);
-      await deleteObject(imageRef);
+      
+      if (recipe.image !== null && recipe.image) {
+        const imageRef = ref(storage, recipe.image);
+        await deleteObject(imageRef);
+      }
       
     } else if (recipe && enteredImage && enteredImage.url === recipe.image) {
       imageUrl = recipe.image;

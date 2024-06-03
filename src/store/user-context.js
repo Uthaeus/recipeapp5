@@ -23,6 +23,7 @@ function UserContextProvider({ children }) {
     }, []);
 
     const initializeUser = async (user) => {
+        console.log('initializing user');
         if (user) {
 
             const docRef = doc(db, "users", user.uid);
@@ -33,11 +34,12 @@ function UserContextProvider({ children }) {
                 setUser({ id: user.uid, ...userData });
 
             }
+
+            setLoading(false);
         } else {
             setUser(null);
+            setLoading(false);
         }
-
-        setLoading(false);
     }
 
     const logout = () => {
