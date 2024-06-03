@@ -3,7 +3,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router";
 
 import { addDoc, doc, updateDoc, collection } from "firebase/firestore";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 
 import { db, storage } from "../../firebase";
 
@@ -106,6 +106,9 @@ export default function RecipeForm({ recipe }) {
 
     if (recipe && enteredImage && enteredImage.url !== recipe.image) {
       imageUrl = await getImageUrlHandler();
+      const imageRef = ref(storage, recipe.image);
+      await deleteObject(imageRef);
+      
     } else if (recipe && enteredImage && enteredImage.url === recipe.image) {
       imageUrl = recipe.image;
     } else if (!recipe && enteredImage) {
