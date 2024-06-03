@@ -37,14 +37,23 @@
             margin-top: 0.5rem;
             text-align: end;
             cursor: pointer;
-            color: red;
+            color: blue;
             font-size: 0.8em;
             font-weight: 500;
             transition: color 0.3s ease-in-out, transform 0.3s ease-in-out;
 
             &:hover {
-                color: rgb(134, 75, 75);
+                color: rgb(27, 61, 126);
                 transform: scale(1.02);
+            }
+        }
+
+        .delete-avatar {
+            color: red;
+            transition: color 0.3s ease-in-out;
+
+            &:hover {
+                color: rgb(134, 75, 75);
             }
         }
 

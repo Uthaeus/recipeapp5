@@ -1,24 +1,48 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import { updateDoc, doc } from "firebase/firestore";
 import { updateProfile, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from "firebase/auth";
+import { getDownloadURL, ref, uploadBytes, deleteObject } from "firebase/storage";
 
-import { auth, db } from "../../firebase";
+import { auth, db, storage } from "../../firebase";
 
 import { UserContext } from "../../store/user-context";
 
+import defaultAvatar from '../../assets/images/guest-icon-add.png';
+
 export default function EditProfile() {
     const { user, updateUser } = useContext(UserContext);
+    const [enteredAvatar,  setEnteredAvatar] = useState(null);
 
     const navigate = useNavigate();
 
     const { register, handleSubmit, formState: { errors }, reset, setError } = useForm();
 
+    const avatar = enteredAvatar?.url ? enteredAvatar.url : defaultAvatar;
+
     useEffect(() => {
         reset(user);
+        if (user?.avatar !== null) {
+            setEnteredAvatar({ url: user.avatar, file: null });
+        }
     }, [user, reset]);
+
+    const avatarChangeHandler = (event) => {
+        const file = event.target.files[0];
+        // create url object
+        const url = URL.createObjectURL(file);
+        setEnteredAvatar({ url, file });
+    }
+
+    const resetAvatarHandler = () => {
+        setEnteredAvatar({ url: user.avatar, file: null });
+    }
+
+    const deleteAvatarHandler = () => {
+        setEnteredAvatar(null);
+    }
 
     const reauthenticateUser = async (password) => {
         const credential = EmailAuthProvider.credential(user.email, password);
@@ -38,6 +62,7 @@ export default function EditProfile() {
         console.log('editing profile', data);
 
         try {
+            let newAvatarUrl = null;
             const isAuthorized = await reauthenticateUser(data.password);
 
             if (!isAuthorized) {
@@ -59,6 +84,20 @@ export default function EditProfile() {
                 await updatePassword(auth.currentUser, data.newPassword);
             }
 
+            if (enteredAvatar?.url && enteredAvatar?.url !== user.avatar) {
+
+                if (user.avatar !== null) {
+                    const oldAvatarFileName = user.avatar.split('/').pop();
+                    const oldAvatarRef = ref(storage, `avatars/${oldAvatarFileName}`);
+                    await deleteObject(oldAvatarRef);
+                }
+
+                const avatarFileName = enteredAvatar.file.name + Date.now();
+                const avatarRef = ref(storage, `avatars/${avatarFileName}`);
+                await uploadBytes(avatarRef, enteredAvatar.file);
+                newAvatarUrl = await getDownloadURL(avatarRef);
+            }
+
             await updateProfile(auth.currentUser, {
                 displayName: data.username,
                 email: data.email
@@ -66,7 +105,8 @@ export default function EditProfile() {
 
             await updateDoc(doc(db, "users", user.id), {
                 username: data.username,
-                email: data.email
+                email: data.email,
+                avatar: newAvatarUrl
             });
 
             updateUser({ ...user, username: data.username, email: data.email });
@@ -86,24 +126,43 @@ export default function EditProfile() {
             <h1 className="auth-title">Edit Profile</h1>
 
             <form onSubmit={handleSubmit(onSubmit)} className="auth-form">
-            <input
-                    type="email"
-                    id="email"
-                    placeholder="Email"
-                    className="auth-input"
-                    autoFocus={true}
-                    {...register("email", { required: true })}
-                />
-                {errors.email && <p className="text-danger">Email is required</p>}
+                <div className="row">
+                    <div className="col-9">
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="Email"
+                            className="auth-input"
+                            autoFocus={true}
+                            {...register("email", { required: true })}
+                        />
+                        {errors.email && <p className="text-danger">Email is required</p>}
 
-                <input
-                    type="text"
-                    id="username"
-                    placeholder="Username"
-                    className="auth-input"
-                    {...register("username", { required: true })}
-                />
-                {errors.username && <p className="text-danger">Username is required</p>}
+                        <input
+                            type="text"
+                            id="username"
+                            placeholder="Username"
+                            className="auth-input"
+                            {...register("username", { required: true })}
+                        />
+                        {errors.username && <p className="text-danger">Username is required</p>}
+
+                    </div>
+                    <div className="col-3">
+                        <div className="auth-form-avatar-input-container">
+                            <img src={avatar} alt="avatar" className="auth-form-avatar" />
+                            <input
+                                type="file"
+                                id="avatar"
+                                className="d-none"
+                                onChange={avatarChangeHandler}
+                            />
+                        </div>
+
+                        <p className="reset-avatar-btn" onClick={resetAvatarHandler}>Reset Avatar</p>
+                        <p className="reset-avatar-btn delete-avatar" onClick={deleteAvatarHandler}>Delete Avatar</p>
+                    </div>
+                </div>
 
                 <input
                     type="password"
