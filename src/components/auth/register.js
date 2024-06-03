@@ -16,7 +16,7 @@ export default function Register() {
     const [enteredAvatar,  setEnteredAvatar] = useState(null);
 
     const navigate = useNavigate();
-    const avatar = enteredAvatar.url ? enteredAvatar.url : defaultAvatar;
+    const avatar = enteredAvatar?.url ? enteredAvatar.url : defaultAvatar;
 
     const avatarChangeHandler = (event) => {
         const file = event.target.files[0];
@@ -42,9 +42,9 @@ export default function Register() {
         try {
             let avatarUrl = null;
 
-            if (enteredAvatar.url) {
-                const avatarFileName = enteredAvatar.file.name;
-                const avatarRef = ref(storage, `avatars/${user.uid}/${avatarFileName}`);
+            if (enteredAvatar?.url) {
+                const avatarFileName = enteredAvatar.file.name + Date.now();
+                const avatarRef = ref(storage, `avatars/${avatarFileName}`);
                 await uploadBytes(avatarRef, enteredAvatar.file);
                 avatarUrl = await getDownloadURL(avatarRef);
             }
@@ -92,7 +92,7 @@ export default function Register() {
 
                     </div>
                     <div className="col-3">
-                        <div className="auth-form-avatar-input-container" onClick={() => document.getElementById("avatar").click()}>
+                        <div className="auth-form-avatar-input-container" onClick={() => document.getElementById("avatar-input").click()}>
                             <img
                                 src={avatar}
                                 alt="avatar"
@@ -101,7 +101,7 @@ export default function Register() {
                             
                             <input
                                 type="file"
-                                id="avatar"
+                                id="avatar-input"
                                 className="d-none"
                                 onChange={avatarChangeHandler}
                             />

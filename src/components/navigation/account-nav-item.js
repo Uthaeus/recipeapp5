@@ -13,6 +13,8 @@ export default function AccountNavItem() {
 
     const navigate = useNavigate();
 
+    const userAvatar = user?.avatar ? user.avatar : avatar;
+
     useEffect(() => {
         const delay = 800; 
         let timeoutId;
@@ -26,7 +28,7 @@ export default function AccountNavItem() {
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [isDropdownOpen, isMouseOverDropdown]);
+    }, [isDropdownOpen, isMouseOverDropdown, closeDropdown]);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(prev => !prev);
@@ -51,7 +53,7 @@ export default function AccountNavItem() {
 
     return (
         <div className="account-nav-item" onClick={toggleDropdown} onMouseLeave={() => closeDropdown()} onMouseOver={openDropdown}>
-            <img src={avatar} alt="avatar" className="account-nav-item__avatar" />
+            <img src={userAvatar} alt="avatar" className="account-nav-item__avatar" />
             <p className="account-nav-item__username">{user.username}</p>
 
             {isDropdownOpen && (
