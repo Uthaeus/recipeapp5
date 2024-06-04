@@ -24,7 +24,7 @@ export default function EditProfile() {
 
     useEffect(() => {
         reset(user);
-        if (user.avatar?.url !== null) {
+        if (user.avatar?.url && user.avatar?.url !== null) {
             setEnteredAvatar({ url: user.avatar.url, file: null });
         }
     }, [user, reset]);
@@ -37,7 +37,9 @@ export default function EditProfile() {
     }
 
     const resetAvatarHandler = () => {
-        setEnteredAvatar({ url: user.avatar, file: null });
+        if (user.avatar?.url && user.avatar?.url !== null) {
+            setEnteredAvatar({ url: user.avatar.url, file: null });
+        }
     }
 
     const deleteAvatarHandler = () => {
@@ -74,6 +76,7 @@ export default function EditProfile() {
             }
 
             if (data.newPassword !== "") {
+                
                 if (data.newPassword !== data.confirmNewPassword) {
                     setError('confirmNewPassword', { type: 'custom', message: 'Passwords do not match' });
                     return;
@@ -83,12 +86,16 @@ export default function EditProfile() {
                     return;
                 }
 
-                await updatePassword(auth.currentUser, data.newPassword);
+                try {
+                    await updatePassword(auth.currentUser, data.newPassword);
+                } catch (error) {
+                    console.error('update password error:', error);
+                }
             }
 
-            if (enteredAvatar?.url && enteredAvatar?.url !== user.avatar.url) {
+            if (enteredAvatar?.url && enteredAvatar?.url !== user.avatar?.url) {
 
-                if (user.avatar.url !== null) {
+                if (user.avatar?.url && user.avatar.url !== null) {
                     console.log('current avatar:', user.avatar.url);
 
                     const oldAvatarFileName = user.avatar.fileName;
@@ -103,10 +110,12 @@ export default function EditProfile() {
                 newAvatarUrl = await getDownloadURL(avatarRef);
             }
 
-            await updateProfile(auth.currentUser, {
-                displayName: data.username,
-                email: data.email
-            });
+            if (user.username !== data.username || user.email !== data.email) {
+                await updateProfile(auth.currentUser, {
+                    displayName: data.username,
+                    email: data.email
+                });
+            }
 
             const userObj = {
                 username: data.username,
@@ -181,14 +190,16 @@ export default function EditProfile() {
                     className="auth-input"
                     {...register("newPassword")}
                 />
+                {errors.newPassword && <p className="text-danger">{errors.newPassword.message}</p>}
 
                 <input
                     type="password"
                     id="confirmNewPassword"
                     placeholder="Confirm New Password"
                     className="auth-input"
-                    {...register("confirmPassword")}
+                    {...register("confirmNewPassword")}
                 />
+                {errors.confirmNewPassword && <p className="text-danger">{errors.confirmNewPassword.message}</p>}
 
                 <input 
                     type="password"
@@ -197,7 +208,7 @@ export default function EditProfile() {
                     className="auth-input"
                     {...register("password", { required: true })}
                 />
-                {errors.password && <p className="text-danger">Current Password is required</p>}
+                {errors.password && <p className="text-danger">{errors.password.message}</p>}
 
                 <button type="submit" className="auth-btn">Update Profile</button>
             </form>
