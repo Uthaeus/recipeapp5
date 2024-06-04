@@ -13,7 +13,7 @@ export default function AccountNavItem() {
 
     const navigate = useNavigate();
 
-    const userAvatar = user?.avatar ? user.avatar : avatar;
+    const userAvatar = user.avatar?.url ? user.avatar.url : avatar;
 
     useEffect(() => {
         const delay = 800; 
@@ -21,14 +21,16 @@ export default function AccountNavItem() {
 
         if (isDropdownOpen) {
             timeoutId = setTimeout(() => {
-                closeDropdown();
+                if (!isMouseOverDropdown) {
+                    setIsDropdownOpen(false);
+                }
             }, delay);
         }
 
         return () => {
             clearTimeout(timeoutId);
         };
-    }, [isDropdownOpen, isMouseOverDropdown, closeDropdown]);
+    }, [isDropdownOpen, isMouseOverDropdown]);
 
     const toggleDropdown = () => {
         setIsDropdownOpen(prev => !prev);

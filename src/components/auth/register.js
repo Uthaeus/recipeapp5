@@ -41,9 +41,10 @@ export default function Register() {
 
         try {
             let avatarUrl = null;
+            let avatarFileName = null;
 
             if (enteredAvatar?.url) {
-                const avatarFileName = enteredAvatar.file.name + Date.now();
+                avatarFileName = enteredAvatar.file.name + Date.now();
                 const avatarRef = ref(storage, `avatars/${avatarFileName}`);
                 await uploadBytes(avatarRef, enteredAvatar.file);
                 avatarUrl = await getDownloadURL(avatarRef);
@@ -55,7 +56,10 @@ export default function Register() {
                 email: data.email,
                 role: "user",
                 created: new Date(),
-                avatar: avatarUrl
+                avatar: {
+                    url: avatarUrl,
+                    fileName: avatarFileName
+                }
             });
         } catch (error) {
             console.error('register user error:', error);

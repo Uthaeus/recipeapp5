@@ -24,8 +24,8 @@ export default function EditProfile() {
 
     useEffect(() => {
         reset(user);
-        if (user?.avatar !== null) {
-            setEnteredAvatar({ url: user.avatar, file: null });
+        if (user.avatar?.url !== null) {
+            setEnteredAvatar({ url: user.avatar.url, file: null });
         }
     }, [user, reset]);
 
@@ -63,6 +63,8 @@ export default function EditProfile() {
 
         try {
             let newAvatarUrl = null;
+            let newAvatarFileName = null;
+
             const isAuthorized = await reauthenticateUser(data.password);
 
             if (!isAuthorized) {
@@ -84,16 +86,19 @@ export default function EditProfile() {
                 await updatePassword(auth.currentUser, data.newPassword);
             }
 
-            if (enteredAvatar?.url && enteredAvatar?.url !== user.avatar) {
+            if (enteredAvatar?.url && enteredAvatar?.url !== user.avatar.url) {
 
-                if (user.avatar !== null) {
-                    const oldAvatarFileName = user.avatar.split('/').pop();
+                if (user.avatar.url !== null) {
+                    console.log('current avatar:', user.avatar.url);
+
+                    const oldAvatarFileName = user.avatar.fileName;
+
                     const oldAvatarRef = ref(storage, `avatars/${oldAvatarFileName}`);
                     await deleteObject(oldAvatarRef);
                 }
 
-                const avatarFileName = enteredAvatar.file.name + Date.now();
-                const avatarRef = ref(storage, `avatars/${avatarFileName}`);
+                newAvatarFileName = enteredAvatar.file.name + Date.now();
+                const avatarRef = ref(storage, `avatars/${newAvatarFileName}`);
                 await uploadBytes(avatarRef, enteredAvatar.file);
                 newAvatarUrl = await getDownloadURL(avatarRef);
             }
@@ -103,13 +108,18 @@ export default function EditProfile() {
                 email: data.email
             });
 
-            await updateDoc(doc(db, "users", user.id), {
+            const userObj = {
                 username: data.username,
                 email: data.email,
-                avatar: newAvatarUrl
-            });
+                avatar: {
+                    url: newAvatarUrl,
+                    fileName: newAvatarFileName
+                }
+            };
 
-            updateUser({ ...user, username: data.username, email: data.email });
+            await updateDoc(doc(db, "users", user.id), userObj);
+
+            updateUser({ ...user, ...userObj });
 
             console.log('end of edit profile submit');
 
@@ -149,11 +159,11 @@ export default function EditProfile() {
 
                     </div>
                     <div className="col-3">
-                        <div className="auth-form-avatar-input-container">
+                        <div className="auth-form-avatar-input-container" onClick={() => document.getElementById("avatar-input").click()}>
                             <img src={avatar} alt="avatar" className="auth-form-avatar" />
                             <input
                                 type="file"
-                                id="avatar"
+                                id="avatar-input"
                                 className="d-none"
                                 onChange={avatarChangeHandler}
                             />
