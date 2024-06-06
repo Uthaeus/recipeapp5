@@ -49,7 +49,7 @@ function UserContextProvider({ children }) {
     }
 
     const logout = () => {
-        toast.warning("Logged out");
+        toast.error("Logged out");
         signOut(auth);
         setUser(null);
     }
