@@ -3,6 +3,8 @@ import { createContext, useState, useEffect } from "react";
 import { getDocs, query, collection, deleteDoc, doc } from "firebase/firestore";
 import { db } from "../firebase";
 
+import { toast } from "react-toastify";
+
 export const RecipesContext = createContext({
     recipes: [],
     categories: [],
@@ -64,6 +66,7 @@ function RecipesContextProvider({ children }) {
     }, [categoryFilter, timeFilter, allRecipes]);
 
     const addRecipe = (recipe) => {
+        toast.success('New Recipe added');
         setAllRecipes([...allRecipes, recipe]);
         if (!categories.includes(recipe.category)) {
             setCategories([...categories, recipe.category]);
@@ -71,16 +74,18 @@ function RecipesContextProvider({ children }) {
     }
 
     const updateRecipe = (recipe) => {
+        toast.info('Recipe updated');
         setAllRecipes(allRecipes.map(r => r.id === recipe.id ? recipe : r));
         if (!categories.includes(recipe.category)) {
             setCategories([...categories, recipe.category]);
         }
     }
 
-    const removeRecipe = (id) => {
+    const removeRecipe = async (id) => {
         const docRef = doc(db, 'recipes', id);
-        deleteDoc(docRef);
+        await deleteDoc(docRef);
         setAllRecipes(allRecipes.filter(recipe => recipe.id !== id));
+        toast.warning('Recipe removed');
     }
 
     const filterRecipes = (filter) => {

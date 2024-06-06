@@ -3,6 +3,8 @@ import { createContext, useState, useEffect } from "react";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { getDoc, doc } from "firebase/firestore";
 
+import { toast } from "react-toastify";
+
 import { auth, db } from "../firebase";
 
 export const UserContext = createContext({
@@ -29,10 +31,9 @@ function UserContextProvider({ children }) {
             const docRef = doc(db, "users", user.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
-
                 const userData = docSnap.data();
                 setUser({ id: user.uid, ...userData });
-
+                toast.success(`Welcome back ${userData.username}`);
             }
 
             setLoading(false);
@@ -43,10 +44,12 @@ function UserContextProvider({ children }) {
     }
 
     const updateUser = (user) => {
+        toast.success('Profile updated');
         setUser(user);
     }
 
     const logout = () => {
+        toast.warning("Logged out");
         signOut(auth);
         setUser(null);
     }
